@@ -1,0 +1,405 @@
+/* ==========================
+   GOOGLE FONT
+========================== */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+/* ==========================
+   RESET
+========================== */
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins',sans-serif;
+}
+
+/* ==========================
+   BODY
+========================== */
+
+body{
+
+    background:#edf2f7;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    min-height:100vh;
+
+    padding:40px 20px;
+
+}
+
+/* ==========================
+   MAIN CONTAINER
+========================== */
+
+.container{
+
+    width:1100px;
+
+    max-width:100%;
+
+    background:#fff;
+
+    display:flex;
+
+    border-radius:20px;
+
+    overflow:hidden;
+
+    box-shadow:0 15px 35px rgba(0,0,0,.15);
+
+}
+
+/* ==========================
+   LEFT PANEL
+========================== */
+
+.left-panel{
+
+    width:38%;
+
+    background:#173d73;
+
+    color:white;
+
+    padding:40px;
+
+    display:flex;
+
+    flex-direction:column;
+
+    justify-content:space-between;
+
+}
+
+.logo{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:12px;
+
+}
+
+.logo-box{
+
+    width:46px;
+
+    height:46px;
+
+    background:#f6b72b;
+
+    color:#173d73;
+
+    font-weight:bold;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    border-radius:12px;
+
+}
+
+.logo h2{
+
+    font-size:34px;
+
+}
+
+.content h1{
+
+    font-size:34px;
+
+    line-height:1.25;
+
+    margin-bottom:25px;
+
+}
+
+.content p{
+
+    color:#d5e2ff;
+
+    line-height:1.8;
+
+}
+
+.features{
+
+    margin-top:40px;
+
+}
+
+.features p{
+
+    margin-bottom:18px;
+
+    color:#d5e2ff;
+
+}
+
+/* ==========================
+   RIGHT PANEL
+========================== */
+
+.right-panel{
+
+    width:62%;
+
+    padding:60px;
+
+    display:flex;
+
+    justify-content:flex-start;
+
+    align-items:flex-start;
+
+}
+
+.login-box{
+
+    width:100%;
+
+    max-width:480px;
+
+}
+
+.login-box h1{
+
+    font-size:42px;
+
+    margin-bottom:10px;
+
+}
+
+.login-box>p{
+
+    color:#777;
+
+    margin-bottom:35px;
+
+}
+
+/* ==========================
+   FORM
+========================== */
+
+label{
+
+    display:block;
+
+    font-weight:600;
+
+    margin-bottom:8px;
+
+}
+
+input{
+
+    width:100%;
+
+    padding:16px;
+
+    border:1px solid #d9d9d9;
+
+    border-radius:12px;
+
+    margin-bottom:22px;
+
+    font-size:15px;
+
+    outline:none;
+
+}
+
+input:focus{
+
+    border-color:#173d73;
+
+}
+
+.password-note{
+
+    display:block;
+
+    margin-top:-12px;
+
+    margin-bottom:25px;
+
+    color:#888;
+
+    font-size:12px;
+
+}
+
+/* ==========================
+   BUTTONS
+========================== */
+
+button{
+
+    width:100%;
+
+    padding:16px;
+
+    border:none;
+
+    border-radius:12px;
+
+    cursor:pointer;
+
+    font-size:16px;
+
+    font-weight:600;
+
+    transition:.3s;
+
+}
+
+button:hover{
+
+    transform:translateY(-2px);
+
+}
+
+form button{
+
+    background:#173d73;
+
+    color:white;
+
+}
+
+form button:hover{
+
+    background:#102f58;
+
+}
+
+.register-btn{
+
+    background:white;
+
+    color:#173d73;
+
+    border:2px solid #173d73;
+
+}
+
+.register-btn:hover{
+
+    background:#173d73;
+
+    color:white;
+
+}
+
+/* ==========================
+   DIVIDER
+========================== */
+
+.divider{
+
+    position:relative;
+
+    text-align:center;
+
+    margin:30px 0;
+
+    color:#777;
+
+}
+
+.divider::before{
+
+    content:"";
+
+    position:absolute;
+
+    left:0;
+
+    top:50%;
+
+    width:35%;
+
+    height:1px;
+
+    background:#ddd;
+
+}
+
+.divider::after{
+
+    content:"";
+
+    position:absolute;
+
+    right:0;
+
+    top:50%;
+
+    width:35%;
+
+    height:1px;
+
+    background:#ddd;
+
+}
+
+/* ==========================
+   MOBILE
+========================== */
+
+@media(max-width:900px){
+
+.container{
+
+    flex-direction:column;
+
+}
+
+.left-panel{
+
+    width:100%;
+
+    padding:35px;
+
+}
+
+.right-panel{
+
+    width:100%;
+
+    padding:40px 30px;
+
+}
+
+.login-box{
+
+    max-width:100%;
+
+}
+
+.content h1{
+
+    font-size:28px;
+
+}
+
+.login-box h1{
+
+    font-size:32px;
+
+}
+
+}
