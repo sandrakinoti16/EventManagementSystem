@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard - Event Management System</title>
+  
+  <!-- CSS Stylesheet -->
+  <link rel="stylesheet" href="dashboard.css?v=1.3">
+  
+  <!-- Third-party Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
+  <!-- Vector outlines script from Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest" defer></script>
+  <!-- Main JS module -->
+  <script src="dashboard.js?v=1.3" defer></script>
+</head>
+<body>
+
+  <!-- Main System Header -->
+  <header class="ems-header">
+    <div class="header-left">
+      <!-- Logo Block -->
+      <a href="index.html" class="ems-logo-area" aria-label="Event Management System Home">
+        <div class="logo-badge">EMS</div>
+        <span class="logo-text">Event Management System</span>
+      </a>
+      
+      <!-- Nav Tabs -->
+      <nav class="nav-links" aria-label="Main Navigation">
+        <a href="index.html" class="nav-item active">Dashboard</a>
+        <a href="reports.html" class="nav-item">Reports</a>
+        <a href="../pages/events.html?v=1.3" class="nav-item">Events</a>
+      </nav>
+    </div>
+
+    <!-- Search in Header -->
+    <div class="header-search">
+      <i class="search-icon" data-lucide="search" aria-hidden="true"></i>
+      <input type="text" id="global-search-input" placeholder="Search events, participants, reports..." aria-label="Global Search">
+    </div>
+
+    <!-- Right Side Actions & Menu -->
+    <div class="header-right">
+      <!-- Notifications Toggle -->
+      <div class="dropdown-container">
+        <button class="icon-button" id="notiDropdownTrigger" aria-label="Notifications" aria-haspopup="true" aria-expanded="false">
+          <i data-lucide="bell"></i>
+          <span class="notification-badge"></span>
+        </button>
+        <!-- Dropdown Notifications Menu -->
+        <div class="notifications-dropdown" id="notiDropdownMenu" role="menu">
+          <div class="noti-header">
+            <h3>Notifications</h3>
+            <button aria-label="Mark all notifications as read">Mark all as read</button>
+          </div>
+          <div class="noti-list" id="notifications-list">
+            <!-- Dynamically populated from JS -->
+          </div>
+        </div>
+      </div>
+
+      <!-- User Profile Toggle -->
+      <div class="dropdown-container">
+        <button class="avatar-wrapper" id="avatarDropdownTrigger" aria-label="User profile menu" aria-haspopup="true" aria-expanded="false">
+          <div class="avatar">JW</div>
+        </button>
+        <!-- Dropdown menu -->
+        <div class="dropdown-menu" id="profileDropdownMenu" role="menu">
+          <div class="dropdown-header">
+            <div class="dropdown-user-name">John Wek</div>
+            <div class="dropdown-user-email">john.wek@eventmanagement.com</div>
+          </div>
+          <a href="#" class="dropdown-item" role="menuitem"><i data-lucide="user" style="width: 16px; height: 16px;"></i> My Profile</a>
+          <a href="#" class="dropdown-item" role="menuitem"><i data-lucide="settings" style="width: 16px; height: 16px;"></i> Settings</a>
+          <a href="reports.html" class="dropdown-item" role="menuitem"><i data-lucide="bar-chart-2" style="width: 16px; height: 16px;"></i> Analytics Reports</a>
+          <a href="../pages/login.html" class="dropdown-item logout" role="menuitem"><i data-lucide="log-out" style="width: 16px; height: 16px;"></i> Sign Out</a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Content Container -->
+  <main class="ems-container">
+    
+    <!-- Title Area -->
+    <section class="page-title-section">
+      <div>
+        <h1>Dashboard</h1>
+        <p>Welcome back, John! Here's a brief summary of how your events are performing.</p>
+      </div>
+      <div>
+        <!-- Date display / filter alternative -->
+        <button class="dashboard-button-outlined" aria-label="Last 30 Days date selection">
+          <i data-lucide="calendar" style="width: 16px; height: 16px;"></i>
+          <span>Last 30 Days</span>
+          <i data-lucide="chevron-down" style="width: 16px; height: 16px;"></i>
+        </button>
+      </div>
+    </section>
+
+    <!-- 4 Stats Cards Grid -->
+    <section class="stats-grid" aria-label="Key Performance Indicators">
+      
+      <!-- Total Events -->
+      <article class="dashboard-card stat-card">
+        <div class="stat-header">
+          <span>TOTAL EVENTS</span>
+          <div class="stat-icon"><i data-lucide="milestone" style="width: 18px; height: 18px;"></i></div>
+        </div>
+        <div class="stat-value-group">
+          <div class="stat-value" id="stat-total-events">-</div>
+          <span class="stat-change positive">+3 this month</span>
+        </div>
+      </article>
+
+      <!-- Active Participants -->
+      <article class="dashboard-card stat-card">
+        <div class="stat-header">
+          <span>ACTIVE PARTICIPANTS</span>
+          <div class="stat-icon"><i data-lucide="users" style="width: 18px; height: 18px;"></i></div>
+        </div>
+        <div class="stat-value-group">
+          <div class="stat-value" id="stat-active-participants">-</div>
+          <span class="stat-change positive">+12% week</span>
+        </div>
+      </article>
+
+      <!-- Ticket Sales -->
+      <article class="dashboard-card stat-card">
+        <div class="stat-header">
+          <span>TICKET SALES</span>
+          <div class="stat-icon"><i data-lucide="badge-dollar-sign" style="width: 18px; height: 18px;"></i></div>
+        </div>
+        <div class="stat-value-group">
+          <div class="stat-value" id="stat-ticket-sales">-</div>
+          <span class="stat-change positive">92% of target</span>
+        </div>
+      </article>
+
+      <!-- Rating -->
+      <article class="dashboard-card stat-card">
+        <div class="stat-header">
+          <span>AVG EVENT RATING</span>
+          <div class="stat-icon"><i data-lucide="star" style="width: 18px; height: 18px;"></i></div>
+        </div>
+        <div class="stat-value-group">
+          <div class="stat-value" id="stat-avg-rating">-</div>
+          <div class="rating-stars" aria-label="4.8 out of 5 stars">
+            <i data-lucide="star" style="width: 16px; height:16px; fill: var(--accent-gold);"></i>
+            <i data-lucide="star" style="width: 16px; height:16px; fill: var(--accent-gold);"></i>
+            <i data-lucide="star" style="width: 16px; height:16px; fill: var(--accent-gold);"></i>
+            <i data-lucide="star" style="width: 16px; height:16px; fill: var(--accent-gold);"></i>
+            <i data-lucide="star" style="width: 16px; height:16px; fill: none;"></i>
+          </div>
+        </div>
+      </article>
+
+    </section>
+
+    <!-- Main Content Layout Splits -->
+    <div class="dashboard-layout">
+      
+      <!-- Left side primary block -->
+      <section class="left-layout-group">
+        
+        <!-- Visual Card 1: Event Performance and Metrics -->
+        <article class="dashboard-card">
+          <div class="card-header-actions">
+            <div class="card-title-group">
+              <h2>Event Performance and Metrics</h2>
+              <p>Visual overview of registrations timeline and demographic spread of active events.</p>
+            </div>
+          </div>
+
+          <!-- Charts columns -->
+          <div class="charts-grid">
+            <!-- Line Chart block -->
+            <div class="chart-container-box">
+              <div class="chart-title">Event Registrations (Last 30 Days)</div>
+              <div class="chart-wrapper">
+                <canvas id="registrationsChart"></canvas>
+              </div>
+            </div>
+
+            <!-- Donut Demographic block -->
+            <div class="chart-container-box">
+              <div class="chart-title">Participant Demographics</div>
+              <div class="chart-wrapper">
+                <canvas id="demographicsChart"></canvas>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- Visual Card 2: Upcoming Events Table -->
+        <article class="dashboard-card">
+          <div class="table-header">
+            <div class="card-title-group">
+              <h2>Upcoming Events</h2>
+              <p>Schedule and registration status of upcoming active events.</p>
+            </div>
+            <div class="filter-input-wrapper search-wrapper-small">
+              <i class="search-icon" data-lucide="search" aria-hidden="true"></i>
+              <input type="text" id="dashboard-search-input" placeholder="Search upcoming events..." aria-label="Search upcoming events">
+            </div>
+          </div>
+
+          <div class="table-wrapper">
+            <table>
+              <thead>
+                <tr>
+                  <th>Event Name</th>
+                  <th>Date Scheduled</th>
+                  <th>Location Venue</th>
+                  <th>Participants</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody id="upcoming-events-tbody">
+                <!-- Dynamically populated from JS -->
+              </tbody>
+            </table>
+          </div>
+
+          <div class="table-action-footer">
+            <a href="../pages/events.html?v=1.3" class="dashboard-button-outlined">View All Events</a>
+          </div>
+        </article>
+
+      </section>
+
+      <!-- Right side activity / quick shortcuts -->
+      <section class="right-layout-group" aria-label="Actions and Updates">
+        
+        <!-- Quick Actions Card -->
+        <article class="dashboard-card">
+          <div class="card-title-group">
+            <h2 style="font-size: 16px;">Quick Actions</h2>
+          </div>
+          <div class="quick-actions-list">
+            <button class="dashboard-button-primary" onclick="location.href='../pages/create_event.html'"><i data-lucide="plus" style="width: 16px; height:16px;"></i> Create New Event</button>
+            <button class="dashboard-button-outlined"><i data-lucide="user-plus" style="width: 16px; height:16px;"></i> Invite Participants</button>
+            <button class="dashboard-button-outlined" onclick="location.href='reports.html'"><i data-lucide="file-text" style="width: 16px; height:16px;"></i> Download Summary Report</button>
+          </div>
+        </article>
+
+        <!-- Recent Activity Feed -->
+        <article class="dashboard-card">
+          <div class="card-title-group">
+            <h2 style="font-size: 16px;">Recent Activity</h2>
+          </div>
+          
+          <div class="recent-activity-list" id="recent-activity-feed">
+            <!-- Dynamically populated from JS -->
+          </div>
+        </article>
+
+      </section>
+
+    </div>
+
+  </main>
+
+</body>
+</html>

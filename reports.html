@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reports - Event Management System</title>
+  
+  <!-- CSS Stylesheet -->
+  <link rel="stylesheet" href="dashboard.css?v=1.3">
+  
+  <!-- Third-party scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
+  <!-- Vector outlines script from Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest" defer></script>
+  <!-- Main JS module -->
+  <script src="dashboard.js?v=1.3" defer></script>
+</head>
+<body>
+
+  <!-- Main System Header -->
+  <header class="ems-header">
+    <div class="header-left">
+      <!-- Logo Block -->
+      <a href="dashboard.html" class="ems-logo-area" aria-label="Event Management System Home">
+        <div class="logo-badge">EMS</div>
+        <span class="logo-text">Event Management System</span>
+      </a>
+      
+      <!-- Nav Tabs -->
+      <nav class="nav-links" aria-label="Main Navigation">
+        <a href="dashboard.html" class="nav-item">Dashboard</a>
+        <a href="reports.html" class="nav-item active">Reports</a>
+        <a href="pages/events.html?v=1.3" class="nav-item">Events</a>
+      </nav>
+    </div>
+
+    <!-- Search in Header -->
+    <div class="header-search">
+      <i class="search-icon" data-lucide="search" aria-hidden="true"></i>
+      <input type="text" id="global-search-input" placeholder="Search events, participants, reports..." aria-label="Global Search">
+    </div>
+
+    <!-- Right Side Actions & Menu -->
+    <div class="header-right">
+      <!-- Notifications Toggle -->
+      <div class="dropdown-container">
+        <button class="icon-button" id="notiDropdownTrigger" aria-label="Notifications" aria-haspopup="true" aria-expanded="false">
+          <i data-lucide="bell"></i>
+          <span class="notification-badge"></span>
+        </button>
+        <!-- Dropdown Notifications Menu -->
+        <div class="notifications-dropdown" id="notiDropdownMenu" role="menu">
+          <div class="noti-header">
+            <h3>Notifications</h3>
+            <button aria-label="Mark all notifications as read">Mark all as read</button>
+          </div>
+          <div class="noti-list" id="notifications-list">
+            <!-- Dynamically populated from JS -->
+          </div>
+        </div>
+      </div>
+
+      <!-- User Profile Toggle -->
+      <div class="dropdown-container">
+        <button class="avatar-wrapper" id="avatarDropdownTrigger" aria-label="User profile menu" aria-haspopup="true" aria-expanded="false">
+          <div class="avatar">JW</div>
+        </button>
+        <!-- Dropdown menu -->
+        <div class="dropdown-menu" id="profileDropdownMenu" role="menu">
+          <div class="dropdown-header">
+            <div class="dropdown-user-name">John Wek</div>
+            <div class="dropdown-user-email">john.wek@eventmanagement.com</div>
+          </div>
+          <a href="#" class="dropdown-item" role="menuitem"><i data-lucide="user" style="width: 16px; height: 16px;"></i> My Profile</a>
+          <a href="#" class="dropdown-item" role="menuitem"><i data-lucide="settings" style="width: 16px; height: 16px;"></i> Settings</a>
+          <a href="reports.html" class="dropdown-item" role="menuitem"><i data-lucide="bar-chart-2" style="width: 16px; height: 16px;"></i> Analytics Reports</a>
+          <a href="pages/login.html" class="dropdown-item logout" role="menuitem"><i data-lucide="log-out" style="width: 16px; height: 16px;"></i> Sign Out</a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Content Container -->
+  <main class="ems-container">
+    
+    <!-- Title Area -->
+    <section class="page-title-section">
+      <div>
+        <h1>Reports</h1>
+        <p>Analyze participants, events financial data, and attendance rate goals.</p>
+      </div>
+    </section>
+
+    <!-- Reports Layout (Split Sidebar & Table) -->
+    <div class="reports-layout">
+      
+      <!-- Left selection sidebar -->
+      <aside class="dashboard-card report-selection-card" aria-label="Reports categories selection">
+        <div class="report-selector-list">
+          <button class="report-selector-item active" onclick="selectReportType('participants', this)">
+            <i data-lucide="users" style="width: 18px; height: 18px;"></i>
+            <span>Participants Report</span>
+          </button>
+          
+          <button class="report-selector-item" onclick="selectReportType('events', this)">
+            <i data-lucide="banknote" style="width: 18px; height: 18px;"></i>
+            <span>Events Summary</span>
+          </button>
+          
+          <button class="report-selector-item" onclick="selectReportType('attendance', this)">
+            <i data-lucide="check-square" style="width: 18px; height: 18px;"></i>
+            <span>Attendance Rates</span>
+          </button>
+        </div>
+      </aside>
+
+      <!-- Right large main details section -->
+      <section class="dashboard-card" aria-label="Reports Results View">
+        
+        <!-- Header area for filters -->
+        <h2 id="report-visual-title" style="font-size: 18px; font-weight: 700; color: var(--text-main);">Detailed Participants Report</h2>
+        
+        <div class="reports-filter-bar">
+          
+          <!-- Text Filter -->
+          <div class="filter-input-wrapper">
+            <i class="search-icon" data-lucide="search" aria-hidden="true" style="width: 16px; height: 16px;"></i>
+            <input type="text" id="reports-search-input" placeholder="Search report content..." aria-label="Filter report results">
+          </div>
+
+          <!-- Date Filters -->
+          <div class="date-picker-wrapper">
+            <label for="reports-date-input">Filtered Date</label>
+            <input type="date" id="reports-date-input" aria-label="Filter report by date">
+          </div>
+
+          <!-- Payout actions / download -->
+          <button class="dashboard-button-primary" id="download-report-btn" aria-label="Export report summary data">
+            <i data-lucide="download" style="width: 16px; height: 16px;"></i>
+            <span>Export Report</span>
+          </button>
+
+        </div>
+
+        <!-- Table Display of Results -->
+        <div class="table-wrapper">
+          <table>
+            <thead id="reports-thead">
+              <!-- Dynamically populated from JS -->
+            </thead>
+            <tbody id="reports-tbody">
+              <!-- Dynamically populated from JS -->
+            </tbody>
+          </table>
+        </div>
+
+      </section>
+
+    </div>
+
+  </main>
+
+</body>
+</html>

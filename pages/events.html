@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Events - Event Management System</title>
+  <!-- Google Fonts: Inter -->
+  <link rel="stylesheet" href="../dashboard.css?v=1.2">
+  <!-- Lucide Icons CDN -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+
+  <!-- Branded Navigation Header -->
+  <header class="ems-header">
+    <div class="header-left">
+      <div class="ems-logo-area">
+        <div class="logo-badge">EMS</div>
+        <span class="logo-text">Event Management System</span>
+      </div>
+      <nav class="nav-links">
+        <a href="../dashboard.html" class="nav-item">Dashboard</a>
+        <a href="../reports.html" class="nav-item">Reports</a>
+        <a href="events.html?v=1.2" class="nav-item active">Events</a>
+      </nav>
+    </div>
+    
+    <div class="header-right">
+      <!-- Notifications trigger button -->
+      <div class="dropdown-container">
+        <button class="icon-button" id="notiDropdownTrigger" aria-label="View notifications">
+          <i data-lucide="bell" style="width: 20px; height: 20px;"></i>
+          <span class="notification-badge" style="display: none;"></span>
+        </button>
+        <div class="notifications-dropdown" id="notiDropdownMenu">
+          <div class="noti-header">
+            <h3>Notifications</h3>
+            <button id="mark-all-read-btn">Mark all as read</button>
+          </div>
+          <div class="noti-list" id="notifications-list">
+            <!-- Dynamically populated -->
+          </div>
+        </div>
+      </div>
+      
+      <!-- User profile circle trigger -->
+      <div class="dropdown-container">
+        <button class="avatar-wrapper" id="avatarDropdownTrigger" aria-label="Open profile menu">
+          <div class="avatar">JW</div>
+        </button>
+        <div class="dropdown-menu" id="profileDropdownMenu">
+          <div class="dropdown-header">
+            <div class="dropdown-user-name">John Wek</div>
+            <div class="dropdown-user-email">john.wek@example.com</div>
+          </div>
+          <a href="../reports.html" class="dropdown-item">
+            <i data-lucide="bar-chart-3" style="width: 16px; height: 16px;"></i>
+            <span>Analytics Reports</span>
+          </a>
+          <a href="login.html" class="dropdown-item logout">
+            <i data-lucide="log-out" style="width: 16px; height: 16px;"></i>
+            <span>Sign Out</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Page Main Content Area -->
+  <main class="ems-container">
+    <div class="page-title-section">
+      <div>
+        <h1>Event Management</h1>
+        <p>Create, update, and manage your schedules, locations, and attendee catalogs.</p>
+      </div>
+    </div>
+
+    <!-- Beautiful Placeholder Card -> Aligned to the design system -->
+    <div class="dashboard-card" style="align-items: center; justify-content: center; min-height: 400px; padding: 48px; border-style: dashed; border-width: 2px;">
+      <div style="background-color: var(--accent-gold-light); color: var(--color-warning); width: 64px; height: 64px; border-radius: var(--radius-el); display: flex; align-items: center; justify-content: center; margin-bottom: 8px;">
+        <i data-lucide="calendar" style="width: 32px; height: 32px;"></i>
+      </div>
+      <h2 style="font-size: 22px; font-weight: 700; color: var(--text-main); margin-bottom: 4px; text-align: center;">Event Management Hub</h2>
+      <p style="color: var(--text-muted); font-size: 15px; margin-bottom: 24px; text-align: center; max-width: 480px;">
+        This module is currently being built to handle creation databases, ticket capacities, and scheduler tables.
+      </p>
+      
+      <div style="display: flex; flex-direction: column; align-items: center; gap: 8px; margin-bottom: 32px;">
+        <span class="badge warning" style="font-size: 13px; padding: 6px 12px;">Under Development</span>
+        <span style="font-size: 12px; color: var(--text-light);">Assigned Developer: Sandra Kinoti</span>
+      </div>
+
+      <a href="../dashboard.html" class="dashboard-button-primary">
+        <i data-lucide="arrow-left" style="width: 16px; height: 16px;"></i>
+        <span>Return to Dashboard</span>
+      </a>
+    </div>
+  </main>
+
+  <!-- Shared page compilation scripts (handles notifications, dropdowns, etc.) -->
+  <script src="../dashboard.js?v=1.2"></script>
+</body>
+</html>
