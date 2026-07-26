@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Events | Event Management System</title>
+
+    <link rel="stylesheet" href="../assets/css/events.css">
+
+    <!-- Remix Icons -->
+    <link
+        href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css"
+        rel="stylesheet">
+</head>
+
+<body>
+
+<!-- ================= NAVBAR ================= -->
+
+<header class="navbar">
+
+    <div class="logo">
+
+        <div class="logo-box">
+            EMS
+        </div>
+
+        <h2>Event Management System</h2>
+
+    </div>
+
+    <nav>
+
+        <a href="dashboard.html">Dashboard</a>
+        <a href="reports.html">Reports</a>
+        <a href="events.html" class="active">Events</a>
+
+    </nav>
+
+    <div class="search-bar">
+
+        <i class="ri-search-line"></i>
+
+        <input
+        type="text"
+        id="searchInput"
+        placeholder="Search events...">
+
+    </div>
+
+    <div class="profile">
+
+        <i class="ri-notification-3-line"></i>
+
+        <div class="avatar">
+            JW
+        </div>
+
+    </div>
+
+</header>
+
+<!-- ================= PAGE ================= -->
+
+<main class="container">
+
+    <div class="page-header">
+
+        <div>
+
+            <h1>Events</h1>
+
+            <p>
+                Create, manage and monitor all events.
+            </p>
+
+        </div>
+
+        <a href="create-event.html" class="primary-btn">
+
+            <i class="ri-add-line"></i>
+
+            Create Event
+
+        </a>
+
+    </div>
+
+    <!-- FILTERS -->
+
+    <section class="filter-card">
+
+        <input
+        type="text"
+        id="eventSearch"
+        placeholder="Search Event">
+
+        <select id="categoryFilter">
+
+            <option>All Categories</option>
+
+            <option>Conference</option>
+
+            <option>Workshop</option>
+
+            <option>Seminar</option>
+
+            <option>Sports</option>
+
+        </select>
+
+        <select id="statusFilter">
+
+            <option>All Status</option>
+
+            <option>Upcoming</option>
+
+            <option>Ongoing</option>
+
+            <option>Completed</option>
+
+        </select>
+
+    </section>
+
+    <!-- EVENTS TABLE -->
+
+    <section class="table-card">
+
+        <table>
+
+            <thead>
+
+            <tr>
+
+                <th>Event</th>
+
+                <th>Category</th>
+
+                <th>Venue</th>
+
+                <th>Date</th>
+
+                <th>Capacity</th>
+
+                <th>Status</th>
+
+                <th>Actions</th>
+
+            </tr>
+
+            </thead>
+
+            <tbody id="eventsTable">
+
+            <tr>
+
+                <td>DevFest Nairobi</td>
+
+                <td>Conference</td>
+
+                <td>KICC</td>
+
+                <td>20 Aug 2026</td>
+
+                <td>500</td>
+
+                <td>
+
+                    <span class="badge upcoming">
+                        Upcoming
+                    </span>
+
+                </td>
+
+                <td>
+
+                    <button class="view-btn">
+
+                        <i class="ri-eye-line"></i>
+
+                    </button>
+
+                    <a
+                    href="edit-event.html"
+                    class="edit-btn">
+
+                        <i class="ri-edit-line"></i>
+
+                    </a>
+
+                    <button
+                    class="delete-btn">
+
+                        <i class="ri-delete-bin-line"></i>
+
+                    </button>
+
+                </td>
+
+            </tr>
+
+            <tr>
+
+                <td>AI Summit</td>
+
+                <td>Seminar</td>
+
+                <td>Safari Park</td>
+
+                <td>02 Sept 2026</td>
+
+                <td>350</td>
+
+                <td>
+
+                    <span class="badge ongoing">
+
+                        Ongoing
+
+                    </span>
+
+                </td>
+
+                <td>
+
+                    <button class="view-btn">
+
+                        <i class="ri-eye-line"></i>
+
+                    </button>
+
+                    <a
+                    href="edit-event.html"
+                    class="edit-btn">
+
+                        <i class="ri-edit-line"></i>
+
+                    </a>
+
+                    <button class="delete-btn">
+
+                        <i class="ri-delete-bin-line"></i>
+
+                    </button>
+
+                </td>
+
+            </tr>
+
+            <tr>
+
+                <td>Sports Day</td>
+
+                <td>Sports</td>
+
+                <td>Daystar Field</td>
+
+                <td>15 Jul 2026</td>
+
+                <td>250</td>
+
+                <td>
+
+                    <span class="badge completed">
+
+                        Completed
+
+                    </span>
+
+                </td>
+
+                <td>
+
+                    <button class="view-btn">
+
+                        <i class="ri-eye-line"></i>
+
+                    </button>
+
+                    <a
+                    href="edit-event.html"
+                    class="edit-btn">
+
+                        <i class="ri-edit-line"></i>
+
+                    </a>
+
+                    <button class="delete-btn">
+
+                        <i class="ri-delete-bin-line"></i>
+
+                    </button>
+
+                </td>
+
+            </tr>
+
+            </tbody>
+
+        </table>
+
+    </section>
+
+</main>
+
+<!-- DELETE MODAL -->
+
+<div class="modal" id="deleteModal">
+
+    <div class="modal-content">
+
+        <h2>Delete Event</h2>
+
+        <p>
+
+            Are you sure you want to delete this event?
+
+        </p>
+
+        <div class="modal-buttons">
+
+            <button id="cancelDelete">
+
+                Cancel
+
+            </button>
+
+            <button id="confirmDelete">
+
+                Delete
+
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script src="../assets/js/events.js"></script>
+
+</body>
+</html>
