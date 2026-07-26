@@ -84,8 +84,24 @@ function loadEvents() {
 
     table.innerHTML = "";
 
-    events.forEach((event) => {
+    const search = document.getElementById("eventSearch")?.value.toLowerCase() || "";
 
+const category = document.getElementById("categoryFilter")?.value || "All Categories";
+
+events
+.filter(event => {
+
+    const matchesSearch =
+        event.name.toLowerCase().includes(search);
+
+    const matchesCategory =
+        category === "All Categories" ||
+        event.category === category;
+
+    return matchesSearch && matchesCategory;
+
+})
+.forEach((event) => {
         table.innerHTML += `
 
         <tr>
@@ -112,7 +128,9 @@ function loadEvents() {
 
             <td>
 
-                <button class="view-btn">👁</button>
+                <button class="view-btn" onclick="viewEvent(${event.id})">
+    <i class="ri-eye-line"></i>
+</button>
 
                 <button class="edit-btn" onclick="editEvent(${event.id})">
     <i class="ri-edit-line"></i>
@@ -212,5 +230,72 @@ if (editForm) {
         window.location.href = "events.html";
 
     });
+
+}
+// ================================
+// VIEW EVENT
+// ================================
+
+function viewEvent(id){
+
+    const events = JSON.parse(localStorage.getItem("events")) || [];
+
+    const event = events.find(e => e.id === id);
+
+    if(!event) return;
+
+    document.getElementById("eventDetails").innerHTML = `
+
+        <p><strong>Event:</strong> ${event.name}</p>
+
+        <p><strong>Category:</strong> ${event.category}</p>
+
+        <p><strong>Venue:</strong> ${event.venue}</p>
+
+        <p><strong>Organizer:</strong> ${event.organizer}</p>
+
+        <p><strong>Start Date:</strong> ${event.startDate}</p>
+
+        <p><strong>End Date:</strong> ${event.endDate}</p>
+
+        <p><strong>Capacity:</strong> ${event.capacity}</p>
+
+        <p><strong>Ticket Price:</strong> Ksh ${event.price}</p>
+
+        <p><strong>Status:</strong> ${event.status}</p>
+
+        <p><strong>Description:</strong><br>${event.description}</p>
+
+    `;
+
+    document.getElementById("viewModal").style.display = "flex";
+
+}
+
+document.getElementById("closeViewModal")?.addEventListener("click", function(){
+
+    document.getElementById("viewModal").style.display = "none";
+
+});
+// ================================
+// LIVE SEARCH
+// ================================
+
+const searchInput = document.getElementById("eventSearch");
+
+if (searchInput) {
+
+    searchInput.addEventListener("keyup", loadEvents);
+
+}
+// ================================
+// CATEGORY FILTER
+// ================================
+
+const categoryFilter = document.getElementById("categoryFilter");
+
+if (categoryFilter) {
+
+    categoryFilter.addEventListener("change", loadEvents);
 
 }
