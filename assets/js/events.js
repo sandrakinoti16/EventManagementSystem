@@ -1,135 +1,216 @@
-// ===============================
-// Event Management System
+// ================================
+// EVENT MANAGEMENT SYSTEM
 // events.js
-// ===============================
+// ================================
 
-document.addEventListener("DOMContentLoaded", () => {
+// Create Event Form
+const createForm = document.getElementById("createEventForm");
 
-    const searchInput = document.getElementById("eventSearch");
-    const categoryFilter = document.getElementById("categoryFilter");
-    const statusFilter = document.getElementById("statusFilter");
-    const rows = document.querySelectorAll("#eventsTable tr");
+if (createForm) {
 
-    // ===============================
-    // SEARCH & FILTER
-    // ===============================
+    createForm.addEventListener("submit", function (e) {
 
-    function filterEvents() {
+        e.preventDefault();
 
-        const search = searchInput.value.toLowerCase();
-        const category = categoryFilter.value;
-        const status = statusFilter.value;
+        const event = {
 
-        rows.forEach(row => {
+            id: Date.now(),
 
-            const eventName =
-                row.cells[0].textContent.toLowerCase();
+            name: document.getElementById("eventName").value.trim(),
 
-            const rowCategory =
-                row.cells[1].textContent;
+            category: document.getElementById("category").value,
 
-            const rowStatus =
-                row.cells[5].textContent.trim();
+            venue: document.getElementById("venue").value.trim(),
 
-            const matchesSearch =
-                eventName.includes(search);
+            organizer: document.getElementById("organizer").value.trim(),
 
-            const matchesCategory =
-                category === "All Categories" ||
-                rowCategory === category;
+            startDate: document.getElementById("startDate").value,
 
-            const matchesStatus =
-                status === "All Status" ||
-                rowStatus === status;
+            endDate: document.getElementById("endDate").value,
 
-            if (
-                matchesSearch &&
-                matchesCategory &&
-                matchesStatus
-            ) {
+            capacity: document.getElementById("capacity").value,
 
-                row.style.display = "";
+            price: document.getElementById("ticketPrice").value,
 
-            } else {
+            description: document.getElementById("description").value.trim(),
 
-                row.style.display = "none";
+            status: "Upcoming"
 
-            }
+        };
 
-        });
+        // Validation
+
+        if (
+            event.name === "" ||
+            event.venue === "" ||
+            event.organizer === "" ||
+            event.startDate === "" ||
+            event.endDate === ""
+        ) {
+
+            alert("Please fill in all required fields.");
+
+            return;
+
+        }
+
+        let events = JSON.parse(localStorage.getItem("events")) || [];
+
+        events.push(event);
+
+        localStorage.setItem("events", JSON.stringify(events));
+
+        alert("Event created successfully!");
+
+        window.location.href = "events.html";
+
+    });
+
+}
+
+
+
+// ================================
+// LOAD EVENTS
+// ================================
+
+function loadEvents() {
+
+    const table = document.getElementById("eventsTable");
+
+    if (!table) return;
+
+    let events = JSON.parse(localStorage.getItem("events")) || [];
+
+    table.innerHTML = "";
+
+    events.forEach((event) => {
+
+        table.innerHTML += `
+
+        <tr>
+
+            <td>${event.name}</td>
+
+            <td>${event.category}</td>
+
+            <td>${event.venue}</td>
+
+            <td>${event.startDate}</td>
+
+            <td>${event.capacity}</td>
+
+            <td>
+
+                <span class="status upcoming">
+
+                    ● ${event.status}
+
+                </span>
+
+            </td>
+
+            <td>
+
+                <button class="view-btn">👁</button>
+
+                <button class="edit-btn" onclick="editEvent(${event.id})">
+    <i class="ri-edit-line"></i>
+</button>
+
+                <button class="delete-btn" onclick="deleteEvent(${event.id})">🗑</button>
+
+            </td>
+
+        </tr>
+
+        `;
+
+    });
+
+}
+
+loadEvents();
+
+
+// ================================
+// DELETE EVENT
+// ================================
+
+function deleteEvent(id){
+
+    if(!confirm("Delete this event?")) return;
+
+    let events = JSON.parse(localStorage.getItem("events")) || [];
+
+    events = events.filter(event => event.id !== id);
+
+    localStorage.setItem("events", JSON.stringify(events));
+
+    loadEvents();
+
+}
+
+
+// ================================
+// EDIT EVENT
+// ================================
+
+function editEvent(id){
+
+    localStorage.setItem("editEventID", id);
+
+    window.location.href = "edit_event.html";
+
+}
+// ================================
+// LOAD EVENT INTO EDIT FORM
+// ================================
+
+const editForm = document.getElementById("editEventForm");
+
+if (editForm) {
+
+    const editID = Number(localStorage.getItem("editEventID"));
+
+    let events = JSON.parse(localStorage.getItem("events")) || [];
+
+    const event = events.find(e => e.id === editID);
+
+    if (event) {
+
+        document.getElementById("eventName").value = event.name;
+        document.getElementById("category").value = event.category;
+        document.getElementById("venue").value = event.venue;
+        document.getElementById("organizer").value = event.organizer;
+        document.getElementById("startDate").value = event.startDate;
+        document.getElementById("endDate").value = event.endDate;
+        document.getElementById("capacity").value = event.capacity;
+        document.getElementById("ticketPrice").value = event.price;
+        document.getElementById("description").value = event.description;
 
     }
 
-    searchInput.addEventListener("keyup", filterEvents);
-    categoryFilter.addEventListener("change", filterEvents);
-    statusFilter.addEventListener("change", filterEvents);
+    editForm.addEventListener("submit", function(e){
 
-    // ===============================
-    // DELETE MODAL
-    // ===============================
+        e.preventDefault();
 
-    const modal = document.getElementById("deleteModal");
-    const confirmDelete = document.getElementById("confirmDelete");
-    const cancelDelete = document.getElementById("cancelDelete");
+        event.name = document.getElementById("eventName").value.trim();
+        event.category = document.getElementById("category").value;
+        event.venue = document.getElementById("venue").value.trim();
+        event.organizer = document.getElementById("organizer").value.trim();
+        event.startDate = document.getElementById("startDate").value;
+        event.endDate = document.getElementById("endDate").value;
+        event.capacity = document.getElementById("capacity").value;
+        event.price = document.getElementById("ticketPrice").value;
+        event.description = document.getElementById("description").value.trim();
 
-    let selectedRow = null;
+        localStorage.setItem("events", JSON.stringify(events));
 
-    document.querySelectorAll(".delete-btn").forEach(button => {
+        alert("Event updated successfully!");
 
-        button.addEventListener("click", function () {
-
-            selectedRow = this.closest("tr");
-
-            modal.style.display = "flex";
-
-        });
+        window.location.href = "events.html";
 
     });
 
-    cancelDelete.addEventListener("click", () => {
-
-        modal.style.display = "none";
-
-    });
-
-    confirmDelete.addEventListener("click", () => {
-
-        if (selectedRow) {
-
-            selectedRow.remove();
-
-        }
-
-        modal.style.display = "none";
-
-    });
-
-    // ===============================
-    // CLOSE MODAL WHEN CLICKING OUTSIDE
-    // ===============================
-
-    window.addEventListener("click", (e) => {
-
-        if (e.target === modal) {
-
-            modal.style.display = "none";
-
-        }
-
-    });
-
-    // ===============================
-    // VIEW BUTTON
-    // ===============================
-
-    document.querySelectorAll(".view-btn").forEach(button => {
-
-        button.addEventListener("click", () => {
-
-            alert("View Event page coming soon.");
-
-        });
-
-    });
-
-});
+}
