@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Event Management System - Event Registration</title>
+
+    <link rel="stylesheet" href="../assets/css/registration.css">
+</head>
+
+<body>
+
+    <header class="navbar">
+        <div class="logo">
+            <span class="logo-box">EMS</span>
+            <h2>Event Management System</h2>
+        </div>
+
+        <nav>
+            <a href="dashboard.html">Dashboard</a>
+            <a href="events.html" class="active">Events</a>
+            <a href="reports.html">Reports</a>
+        </nav>
+    </header>
+
+    <main class="container">
+
+        <div class="card">
+
+            <h1>Register for Event</h1>
+            <p>Fill in your details below to complete your registration.</p>
+
+            <form id="registrationForm">
+
+                <div class="grid">
+
+                    <div class="input-group">
+                        <label>Event Name</label>
+                        <input
+                            type="text"
+                            id="eventName"
+                            placeholder="Enter event name"
+                            required>
+                    </div>
+
+                    <div class="input-group">
+                        <label>Full Name</label>
+                        <input
+                            type="text"
+                            id="fullName"
+                            placeholder="Enter full name"
+                            required>
+                    </div>
+
+                    <div class="input-group">
+                        <label>Email</label>
+                        <input
+                            type="email"
+                            id="email"
+                            placeholder="Enter email address"
+                            required>
+                    </div>
+
+                    <div class="input-group">
+                        <label>Phone Number</label>
+                        <input
+                            type="tel"
+                            id="phone"
+                            placeholder="07XXXXXXXX"
+                            required>
+                    </div>
+
+                    <div class="input-group">
+                        <label>Student ID</label>
+                        <input
+                            type="text"
+                            id="studentId"
+                            placeholder="Student ID"
+                            required>
+                    </div>
+
+                    <div class="input-group">
+                        <label>Number of Tickets</label>
+                        <input
+                            type="number"
+                            id="tickets"
+                            value="1"
+                            min="1"
+                            required>
+                    </div>
+
+                </div>
+
+                <div class="buttons">
+                    <a href="events.html" class="cancel-btn">Cancel</a>
+
+                    <button type="submit" class="register-btn">
+                        Register Event
+                    </button>
+                </div>
+
+            </form>
+
+        </div>
+
+    </main>
+
+    <script src="../assets/js/registration.js"></script>
+
+</body>
+</html>

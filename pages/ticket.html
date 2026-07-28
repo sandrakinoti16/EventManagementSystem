@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Event Ticket</title>
+
+    <link rel="stylesheet" href="../assets/css/registration.css">
+</head>
+
+<body>
+
+<header class="navbar">
+    <div class="logo">
+        <span class="logo-box">EMS</span>
+        <h2>Event Management System</h2>
+    </div>
+
+    <nav>
+        <a href="events.html">Events</a>
+        <a href="dashboard.html">Dashboard</a>
+    </nav>
+</header>
+
+<div class="container">
+
+    <div class="card">
+
+        <h1>Registration Successful 🎉</h1>
+
+        <p>Your event ticket has been generated.</p>
+
+        <div class="ticket">
+
+            <p><strong>Ticket Number:</strong> <span id="ticketNumber"></span></p>
+
+            <p><strong>Event:</strong> <span id="eventName"></span></p>
+
+            <p><strong>Name:</strong> <span id="fullName"></span></p>
+
+            <p><strong>Email:</strong> <span id="email"></span></p>
+
+            <p><strong>Phone:</strong> <span id="phone"></span></p>
+
+            <p><strong>Student ID:</strong> <span id="studentId"></span></p>
+
+            <p><strong>Tickets:</strong> <span id="tickets"></span></p>
+
+            <p><strong>Date Registered:</strong> <span id="registrationDate"></span></p>
+
+        </div>
+
+        <div class="buttons">
+
+            <a href="events.html" class="cancel-btn">
+                Back to Events
+            </a>
+
+            <button onclick="window.print()" class="register-btn">
+                Print Ticket
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+
+const registration = JSON.parse(localStorage.getItem("eventRegistration"));
+
+if (registration) {
+
+    document.getElementById("ticketNumber").textContent = registration.ticketNumber;
+    document.getElementById("eventName").textContent = registration.eventName;
+    document.getElementById("fullName").textContent = registration.fullName;
+    document.getElementById("email").textContent = registration.email;
+    document.getElementById("phone").textContent = registration.phone;
+    document.getElementById("studentId").textContent = registration.studentId;
+    document.getElementById("tickets").textContent = registration.tickets;
+    document.getElementById("registrationDate").textContent = registration.registrationDate;
+
+} else {
+
+    document.querySelector(".ticket").innerHTML =
+        "<h3>No registration found.</h3>";
+
+}
+
+</script>
+
+</body>
+</html>
