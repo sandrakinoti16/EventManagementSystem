@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Edit Event</title>
+
+    <link rel="stylesheet"
+          href="../assets/css/events.css">
+
+    <link
+    href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css"
+    rel="stylesheet">
+
+</head>
+
+<body>
+
+<!-- ================= NAVBAR ================= -->
+
+<header class="navbar">
+
+    <div class="logo">
+
+        <div class="logo-box">EMS</div>
+
+        <h2>Event Management System</h2>
+
+    </div>
+
+    <nav>
+
+        <a href="dashboard.html">Dashboard</a>
+
+        <a href="reports.html">Reports</a>
+
+        <a href="events.html" class="active">Events</a>
+
+    </nav>
+
+    <div class="profile">
+
+        <i class="ri-notification-3-line"></i>
+
+        <div class="avatar">
+
+            JW
+
+        </div>
+
+    </div>
+
+</header>
+
+<!-- ================= PAGE ================= -->
+
+<main class="container">
+
+<div class="form-card">
+
+<h1>Edit Event</h1>
+
+<p>
+<p>
+Update the details of your event below.
+</p>
+</p>
+
+<form id="editEventForm">
+
+<div class="form-grid">
+
+<div class="form-group">
+
+<label>Event Name</label>
+
+<input
+type="text"
+id="eventName"
+placeholder="Enter event name"
+required>
+
+</div>
+
+<div class="form-group">
+
+<label>Category</label>
+
+<select id="category">
+
+<option>Conference</option>
+
+<option>Workshop</option>
+
+<option>Seminar</option>
+
+<option>Sports</option>
+
+<option>Concert</option>
+
+</select>
+
+</div>
+
+<div class="form-group">
+
+<label>Venue</label>
+
+<input
+type="text"
+id="venue"
+placeholder="Enter venue">
+
+</div>
+
+<div class="form-group">
+
+<label>Organizer</label>
+
+<input
+type="text"
+id="organizer"
+placeholder="Organizer name">
+
+</div>
+
+<div class="form-group">
+
+<label>Start Date</label>
+
+<input
+type="date"
+id="startDate">
+
+</div>
+
+<div class="form-group">
+
+<label>End Date</label>
+
+<input
+type="date"
+id="endDate">
+
+</div>
+
+<div class="form-group">
+
+<label>Capacity</label>
+
+<input
+type="number"
+id="capacity"
+placeholder="0">
+
+</div>
+
+<div class="form-group">
+
+<label>Ticket Price</label>
+
+<input
+type="number"
+id="ticketPrice"
+placeholder="0">
+
+</div>
+
+<div class="form-group full-width">
+
+<label>Description</label>
+
+<textarea
+id="description"
+rows="5"
+placeholder="Write event description..."></textarea>
+
+</div>
+
+<div class="form-group full-width">
+
+<label>Upload Event Image</label>
+
+<input
+type="file"
+id="image">
+
+</div>
+
+</div>
+
+<div class="button-group">
+
+<a href="events.html"
+class="secondary-btn">
+
+Cancel
+
+</a>
+
+<button
+type="submit"
+class="primary-btn">
+
+<i class="ri-save-line"></i>
+
+Update Event
+
+</button>
+
+</div>
+
+</form>
+
+</div>
+
+</main>
+
+<script src="../assets/js/events.js"></script>
+
+</body>
+
+</html>
