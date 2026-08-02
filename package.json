@@ -1,18 +1,32 @@
 {
   "name": "eventmanagementsystem",
   "version": "1.0.0",
+  "description": "The Event Management System is a web application that allows users to view, register for, and manage events. Administrators can create, update, and delete events, while participants can register and receive event tickets.",
   "main": "index.js",
+  "type": "commonjs",
   "scripts": {
     "start": "node server/server.js",
-    "dev": "nodemon server/server.js"
+    "dev": "nodemon server/server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "directories": {
+    "doc": "docs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sandrakinoti16/EventManagementSystem.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "description": "",
+  "bugs": {
+    "url": "https://github.com/sandrakinoti16/EventManagementSystem/issues"
+  },
+  "homepage": "https://github.com/sandrakinoti16/EventManagementSystem#readme",
   "dependencies": {
     "bcrypt": "^6.0.0",
     "cors": "^2.8.6",
+    "dotenv": "^17.4.2",
     "express": "^5.2.1",
     "express-session": "^1.19.0",
     "mysql": "^2.18.1",
