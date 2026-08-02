@@ -3,13 +3,18 @@ const path = require("path");
 const cors = require("cors");
 const db = require("./config/database");
 const authRoutes = require("./routes/authRoutes");
+const eventRoutes = require("./routes/eventRoutes");
 const session = require("express-session");
 
 const app = express();
+const PORT = 3000;
+
+// Middleware
 app.use(cors({
-    origin: "http://localhost:3000", // Adjust this to your frontend's URL
+    origin: "http://localhost:3000",
     credentials: true
 }));
+
 app.use(session({
     secret: "eventflow_secret_key",
     resave: false,
@@ -18,19 +23,19 @@ app.use(session({
         maxAge: 1000 * 60 * 60 // 1 hour
     }
 }));
-const PORT = 3000;
 
-// Middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(express.static(path.join(__dirname, "../auth")));
+
+// Serve the ENTIRE project folder
+app.use(express.static(path.join(__dirname, "..")));
 
 // Routes
 app.use("/auth", authRoutes);
-
-// Test Route
+app.use("/events", eventRoutes);
+// Home Route
 app.get("/", (req, res) => {
-    res.send("EventFlow Server is Running!");
+    res.redirect("/auth/login.html");
 });
 
 // Start Server

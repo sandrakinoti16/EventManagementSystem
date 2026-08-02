@@ -3,49 +3,39 @@
 // events.js
 // ================================
 
-// Create Event Form
+// ================================
+// CREATE EVENT FORM
+// ================================
+
 const createForm = document.getElementById("createEventForm");
 
 if (createForm) {
 
-    createForm.addEventListener("submit", function (e) {
+    createForm.addEventListener("submit", async function (e) {
 
         e.preventDefault();
 
         const event = {
 
-            id: Date.now(),
-
-            name: document.getElementById("eventName").value.trim(),
-
-            category: document.getElementById("category").value,
-
-            venue: document.getElementById("venue").value.trim(),
-
-            organizer: document.getElementById("organizer").value.trim(),
-
-            startDate: document.getElementById("startDate").value,
-
-            endDate: document.getElementById("endDate").value,
-
-            capacity: document.getElementById("capacity").value,
-
-            price: document.getElementById("ticketPrice").value,
+            title: document.getElementById("eventName").value.trim(),
 
             description: document.getElementById("description").value.trim(),
 
-            status: "Upcoming"
+            venue: document.getElementById("venue").value.trim(),
+
+            event_date: document.getElementById("startDate").value,
+
+            event_time: "09:00:00",
+
+            capacity: parseInt(document.getElementById("capacity").value)
 
         };
 
         // Validation
-
         if (
-            event.name === "" ||
+            event.title === "" ||
             event.venue === "" ||
-            event.organizer === "" ||
-            event.startDate === "" ||
-            event.endDate === ""
+            event.event_date === ""
         ) {
 
             alert("Please fill in all required fields.");
@@ -54,15 +44,41 @@ if (createForm) {
 
         }
 
-        let events = JSON.parse(localStorage.getItem("events")) || [];
+        try {
 
-        events.push(event);
+            const response = await fetch("/events", {
 
-        localStorage.setItem("events", JSON.stringify(events));
+                method: "POST",
 
-        alert("Event created successfully!");
+                headers: {
+                    "Content-Type": "application/json"
+                },
 
-        window.location.href = "events.html";
+                body: JSON.stringify(event)
+
+            });
+
+            const data = await response.json();
+
+            if (!response.ok) {
+
+                alert(data.message || "Failed to create event.");
+
+                return;
+
+            }
+
+            alert(data.message);
+
+            window.location.href = "events.html";
+
+        } catch (error) {
+
+            console.error(error);
+
+            alert("Unable to connect to the server.");
+
+        }
 
     });
 
@@ -71,80 +87,93 @@ if (createForm) {
 
 
 // ================================
-// LOAD EVENTS
+// LOAD EVENTS FROM DATABASE
 // ================================
 
-function loadEvents() {
+async function loadEvents() {
 
     const table = document.getElementById("eventsTable");
 
     if (!table) return;
 
-    let events = JSON.parse(localStorage.getItem("events")) || [];
-
     table.innerHTML = "";
 
-    const search = document.getElementById("eventSearch")?.value.toLowerCase() || "";
+    try {
 
-const category = document.getElementById("categoryFilter")?.value || "All Categories";
+        const response = await fetch("/events");
 
-events
-.filter(event => {
+        const events = await response.json();
 
-    const matchesSearch =
-        event.name.toLowerCase().includes(search);
+        const search =
+            document.getElementById("eventSearch")?.value.toLowerCase() || "";
 
-    const matchesCategory =
-        category === "All Categories" ||
-        event.category === category;
+        const category =
+            document.getElementById("categoryFilter")?.value || "All Categories";
 
-    return matchesSearch && matchesCategory;
+        events
+            .filter(event => {
 
-})
-.forEach((event) => {
-        table.innerHTML += `
+                const matchesSearch =
+                    event.name.toLowerCase().includes(search);
 
-        <tr>
+                const matchesCategory =
+                    category === "All Categories" ||
+                    event.category === category;
 
-            <td>${event.name}</td>
+                return matchesSearch && matchesCategory;
 
-            <td>${event.category}</td>
+            })
+            .forEach((event) => {
 
-            <td>${event.venue}</td>
+                table.innerHTML += `
 
-            <td>${event.startDate}</td>
+                <tr>
 
-            <td>${event.capacity}</td>
+                    <td>${event.name}</td>
 
-            <td>
+                    <td>${event.category}</td>
 
-                <span class="status upcoming">
+                    <td>${event.venue}</td>
 
-                    ● ${event.status}
+                    <td>${event.startDate}</td>
 
-                </span>
+                    <td>${event.capacity}</td>
 
-            </td>
+                    <td>
+                        <span class="status upcoming">
+                            ● ${event.status}
+                        </span>
+                    </td>
 
-            <td>
+                    <td>
 
-                <button class="view-btn" onclick="viewEvent(${event.id})">
-    <i class="ri-eye-line"></i>
-</button>
+                        <button class="view-btn" onclick="viewEvent(${event.id})">
+                            <i class="ri-eye-line"></i>
+                        </button>
 
-                <button class="edit-btn" onclick="editEvent(${event.id})">
-    <i class="ri-edit-line"></i>
-</button>
+                        <button class="edit-btn" onclick="editEvent(${event.id})">
+                            <i class="ri-edit-line"></i>
+                        </button>
 
-                <button class="delete-btn" onclick="deleteEvent(${event.id})">🗑</button>
+                        <button class="delete-btn" onclick="deleteEvent(${event.id})">
+                            🗑
+                        </button>
 
-            </td>
+                    </td>
 
-        </tr>
+                </tr>
 
-        `;
+                `;
 
-    });
+            });
+
+    } catch (error) {
+
+        console.error(error);
+
+        alert("Unable to load events.");
+
+    }
 
 }
 
@@ -155,17 +184,31 @@ loadEvents();
 // DELETE EVENT
 // ================================
 
-function deleteEvent(id){
+async function deleteEvent(id) {
 
-    if(!confirm("Delete this event?")) return;
+    if (!confirm("Delete this event?")) return;
 
-    let events = JSON.parse(localStorage.getItem("events")) || [];
+    try {
 
-    events = events.filter(event => event.id !== id);
+        const response = await fetch(`/events/${id}`, {
 
-    localStorage.setItem("events", JSON.stringify(events));
+            method: "DELETE"
 
-    loadEvents();
+        });
+
+        const data = await response.json();
+
+        alert(data.message);
+
+        loadEvents();
+
+    } catch (error) {
+
+        console.error(error);
+
+        alert("Unable to delete event.");
+
+    }
 
 }
 
@@ -174,11 +217,9 @@ function deleteEvent(id){
 // EDIT EVENT
 // ================================
 
-function editEvent(id){
+function editEvent(id) {
 
-    localStorage.setItem("editEventID", id);
-
-    window.location.href = "edit_event.html";
+    window.location.href = `edit_event.html?id=${id}`;
 
 }
 // ================================
@@ -189,47 +230,73 @@ const editForm = document.getElementById("editEventForm");
 
 if (editForm) {
 
-    const editID = Number(localStorage.getItem("editEventID"));
+    const params = new URLSearchParams(window.location.search);
 
-    let events = JSON.parse(localStorage.getItem("events")) || [];
+    const id = params.get("id");
 
-    const event = events.find(e => e.id === editID);
+    fetch(`/events`)
+        .then(res => res.json())
+        .then(events => {
 
-    if (event) {
+            const event = events.find(e => e.id == id);
 
-        document.getElementById("eventName").value = event.name;
-        document.getElementById("category").value = event.category;
-        document.getElementById("venue").value = event.venue;
-        document.getElementById("organizer").value = event.organizer;
-        document.getElementById("startDate").value = event.startDate;
-        document.getElementById("endDate").value = event.endDate;
-        document.getElementById("capacity").value = event.capacity;
-        document.getElementById("ticketPrice").value = event.price;
-        document.getElementById("description").value = event.description;
+            if (!event) {
 
-    }
+                alert("Event not found.");
 
-    editForm.addEventListener("submit", function(e){
+                window.location.href = "events.html";
 
-        e.preventDefault();
+                return;
 
-        event.name = document.getElementById("eventName").value.trim();
-        event.category = document.getElementById("category").value;
-        event.venue = document.getElementById("venue").value.trim();
-        event.organizer = document.getElementById("organizer").value.trim();
-        event.startDate = document.getElementById("startDate").value;
-        event.endDate = document.getElementById("endDate").value;
-        event.capacity = document.getElementById("capacity").value;
-        event.price = document.getElementById("ticketPrice").value;
-        event.description = document.getElementById("description").value.trim();
+            }
 
-        localStorage.setItem("events", JSON.stringify(events));
+            document.getElementById("eventName").value = event.name;
+            document.getElementById("venue").value = event.venue;
+            document.getElementById("startDate").value = event.startDate;
+            document.getElementById("endDate").value = event.endDate;
+            document.getElementById("capacity").value = event.capacity;
+            document.getElementById("description").value = event.description;
 
-        alert("Event updated successfully!");
+            editForm.addEventListener("submit", async function (e) {
 
-        window.location.href = "events.html";
+                e.preventDefault();
 
-    });
+                const updatedEvent = {
+
+                    title: document.getElementById("eventName").value.trim(),
+                    description: document.getElementById("description").value.trim(),
+                    venue: document.getElementById("venue").value.trim(),
+                    event_date: document.getElementById("startDate").value,
+                    event_time: "09:00:00",
+                    capacity: parseInt(document.getElementById("capacity").value)
+
+                };
+
+                const response = await fetch(`/events/${id}`, {
+
+                    method: "PUT",
+
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+
+                    body: JSON.stringify(updatedEvent)
+
+                });
+
+                const data = await response.json();
+
+                alert(data.message);
+
+                if (response.ok) {
+
+                    window.location.href = "events.html";
+
+                }
+
+            });
+
+        });
 
 }
 // ================================

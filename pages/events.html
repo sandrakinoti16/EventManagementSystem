@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Events | Event Management System</title>
+
+    <link rel="stylesheet" href="../assets/css/events.css">
+
+    <!-- Remix Icons -->
+    <link
+        href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css"
+        rel="stylesheet">
+</head>
+
+<body>
+
+<!-- ================= NAVBAR ================= -->
+
+<header class="navbar">
+
+    <div class="logo">
+
+        <div class="logo-box">
+            EMS
+        </div>
+
+        <h2>Event Management System</h2>
+
+    </div>
+
+    <nav>
+
+        <a href="../dashboard.html">Dashboard</a>
+        <a href="../reports.html">Reports</a>
+        <a href="events.html" class="active">Events</a>
+
+    </nav>
+
+    <div class="search-bar">
+
+        <i class="ri-search-line"></i>
+
+        <input
+        type="text"
+        id="navbarSearch"
+        placeholder="Search events...">
+
+    </div>
+
+    <div class="profile">
+
+        <i class="ri-notification-3-line"></i>
+
+        <div class="avatar">
+            JW
+        </div>
+
+    </div>
+
+</header>
+
+<!-- ================= PAGE ================= -->
+
+<main class="container">
+
+    <div class="page-header">
+
+        <div>
+
+            <h1>Events</h1>
+
+            <p>
+                Create, manage and monitor all events.
+            </p>
+
+        </div>
+
+        <a href="create_event.html" class="primary-btn">
+
+            <i class="ri-add-line"></i>
+
+            Create Event
+
+        </a>
+
+    </div>
+
+    <!-- FILTERS -->
+
+    <section class="filter-card">
+
+        <input
+        type="text"
+        id="eventSearch"
+        placeholder="Search Event">
+
+        <select id="categoryFilter">
+
+            <option>All Categories</option>
+
+            <option>Conference</option>
+
+            <option>Workshop</option>
+
+            <option>Seminar</option>
+
+            <option>Sports</option>
+
+        </select>
+
+        <select id="statusFilter">
+
+            <option>All Status</option>
+
+            <option>Upcoming</option>
+
+            <option>Ongoing</option>
+
+            <option>Completed</option>
+
+        </select>
+
+    </section>
+
+    <!-- EVENTS TABLE -->
+
+    <section class="table-card">
+
+        <table>
+
+            <thead>
+
+            <tr>
+
+                <th>Event</th>
+
+                <th>Category</th>
+
+                <th>Venue</th>
+
+                <th>Date</th>
+
+                <th>Capacity</th>
+
+                <th>Status</th>
+
+                <th>Actions</th>
+
+            </tr>
+
+            </thead>
+
+            <tbody id="eventsTable">
+
+            
+
+            </tbody>
+
+        </table>
+
+    </section>
+
+</main>
+
+<!-- DELETE MODAL -->
+
+<div class="modal" id="deleteModal">
+
+    <div class="modal-content">
+
+        <h2>Delete Event</h2>
+
+        <p>
+
+            Are you sure you want to delete this event?
+
+        </p>
+
+        <div class="modal-buttons">
+
+            <button id="cancelDelete">
+
+                Cancel
+
+            </button>
+
+            <button id="confirmDelete">
+
+                Delete
+
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+<!-- VIEW EVENT MODAL -->
+
+<div class="modal" id="viewModal">
+
+    <div class="modal-content">
+
+        <h2>Event Details</h2>
+
+        <div id="eventDetails"></div>
+
+        <div class="modal-buttons">
+
+            <button id="closeViewModal">
+
+                Close
+
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+<script src="../assets/js/events.js"></script>
+
+</body>
+</html>

@@ -31,10 +31,11 @@ loginForm.addEventListener("submit", async function (e) {
 
         if (response.ok) {
 
-            // We'll replace this with the dashboard later
-            alert("Login successful!");
+    alert("Login successful!");
 
-        }
+    window.location.href = "/dashboard.html";
+
+}
 
     } catch (error) {
 

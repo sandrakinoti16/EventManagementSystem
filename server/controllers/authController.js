@@ -1,8 +1,13 @@
 const db = require("../config/database");
 const bcrypt = require("bcrypt");
 
-
+// ======================
+// REGISTER USER
+// ======================
 const registerUser = async (req, res) => {
+
+    console.log("========== REGISTER REQUEST ==========");
+    console.log("Request Body:", req.body);
 
     const { fullName, email, password } = req.body;
 
@@ -13,12 +18,16 @@ const registerUser = async (req, res) => {
         db.query(checkSql, [email], async (err, results) => {
 
             if (err) {
+                console.error("Database Error (SELECT):", err);
+
                 return res.status(500).json({
-                    message: "Database Error"
+                    message: err.message
                 });
             }
 
             if (results.length > 0) {
+                console.log("Email already exists.");
+
                 return res.status(400).json({
                     message: "Email already exists."
                 });
@@ -32,13 +41,18 @@ const registerUser = async (req, res) => {
                 VALUES (?, ?, ?)
             `;
 
-            db.query(insertSql, [fullName, email, hashedPassword], (err) => {
+            db.query(insertSql, [fullName, email, hashedPassword], (err, result) => {
 
                 if (err) {
+                    console.error("Database Error (INSERT):", err);
+
                     return res.status(500).json({
-                        message: "Registration failed."
+                        message: err.message
                     });
                 }
+
+                console.log("User registered successfully.");
+                console.log("Inserted ID:", result.insertId);
 
                 return res.status(201).json({
                     message: "Registration Successful!"
@@ -50,15 +64,19 @@ const registerUser = async (req, res) => {
 
     } catch (error) {
 
+        console.error("Server Error:", error);
+
         return res.status(500).json({
-            message: "Server Error"
+            message: error.message
         });
 
     }
 
 };
 
-
+// ======================
+// LOGIN USER
+// ======================
 const loginUser = (req, res) => {
 
     const { email, password } = req.body;
@@ -68,6 +86,8 @@ const loginUser = (req, res) => {
     db.query(sql, [email], async (err, results) => {
 
         if (err) {
+            console.error(err);
+
             return res.status(500).json({
                 message: "Database Error"
             });
@@ -90,7 +110,7 @@ const loginUser = (req, res) => {
         }
 
         req.session.user = {
-            id: user.id,
+            id: user.user_id, // Fixed from user.id
             fullName: user.full_name,
             email: user.email,
             role: user.role
@@ -108,12 +128,16 @@ const loginUser = (req, res) => {
 
 };
 
-
+// ======================
+// LOGOUT USER
+// ======================
 const logoutUser = (req, res) => {
 
     req.session.destroy((err) => {
 
         if (err) {
+            console.error(err);
+
             return res.status(500).json({
                 message: "Logout failed."
             });
@@ -128,7 +152,6 @@ const logoutUser = (req, res) => {
     });
 
 };
-
 
 module.exports = {
     registerUser,
