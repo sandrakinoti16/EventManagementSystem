@@ -4,24 +4,86 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Event Management System - Event Registration</title>
+    
+<link
+    href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css"
+    rel="stylesheet">
 
+<script src="https://unpkg.com/lucide@latest" defer></script>
+<script src="../dashboard.js" defer></script>
+<link rel="stylesheet" href="../dashboard.css">
     <link rel="stylesheet" href="../assets/css/registration.css">
+    
 </head>
 
 <body>
 
-    <header class="navbar">
-        <div class="logo">
-            <span class="logo-box">EMS</span>
-            <h2>Event Management System</h2>
-        </div>
+    <header class="ems-header">
+    <div class="header-left">
+      <!-- Logo Block -->
+      <a href="../dashboard.html" class="ems-logo-area" aria-label="Event Management System Home">
+        <div class="logo-badge">EMS</div>
+        <span class="logo-text">Event Management System</span>
+      </a>
+      
+      <!-- Nav Tabs -->
+      <nav class="nav-links" aria-label="Main Navigation">
+    <a href="../dashboard.html" class="nav-item">Dashboard</a>
+    <a href="../reports.html" class="nav-item">Reports</a>
+    <a href="events.html" class="nav-item">Events</a>
+    <a href="registration.html" class="nav-item">Registrations</a>
+    <a href="ticket.html" class="nav-item">Tickets</a>
+</nav>
+    </div>
 
-        <nav>
-            <a href="dashboard.html">Dashboard</a>
-            <a href="events.html" class="active">Events</a>
-            <a href="reports.html">Reports</a>
-        </nav>
-    </header>
+    <!-- Search in Header -->
+    <div class="header-search">
+      <i class="search-icon" data-lucide="search" aria-hidden="true"></i>
+      <input type="text" id="global-search-input" placeholder="Search events, participants, reports..." aria-label="Global Search">
+    </div>
+
+    <!-- Right Side Actions & Menu -->
+    <div class="header-right">
+      <!-- Notifications Toggle -->
+      <div class="dropdown-container">
+        <button class="icon-button" id="notiDropdownTrigger" aria-label="Notifications" aria-haspopup="true" aria-expanded="false">
+          <i data-lucide="bell"></i>
+          <span class="notification-badge"></span>
+        </button>
+        <!-- Dropdown Notifications Menu -->
+        <div class="notifications-dropdown" id="notiDropdownMenu" role="menu">
+          <div class="noti-header">
+            <h3>Notifications</h3>
+            <button aria-label="Mark all notifications as read">Mark all as read</button>
+          </div>
+          <div class="noti-list" id="notifications-list">
+            <!-- Dynamically populated from JS -->
+          </div>
+        </div>
+      </div>
+
+      <!-- User Profile Toggle -->
+      <div class="dropdown-container">
+        <button class="avatar-wrapper" id="avatarDropdownTrigger" aria-label="User profile menu" aria-haspopup="true" aria-expanded="false">
+          <div class="avatar" id="user-avatar">U</div>
+        </button>
+        <!-- Dropdown menu -->
+        <div class="dropdown-menu" id="profileDropdownMenu" role="menu">
+          <div class="dropdown-header">
+            <div class="dropdown-user-name" id="logged-user-name">User</div>
+            <div class="dropdown-user-email" id="logged-user-email">user@email.com</div>
+          </div>
+          <a href="#" class="dropdown-item" role="menuitem"><i data-lucide="user" style="width: 16px; height: 16px;"></i> My Profile</a>
+          <a href="#" class="dropdown-item" role="menuitem"><i data-lucide="settings" style="width: 16px; height: 16px;"></i> Settings</a>
+          <a href="../reports.html" class="dropdown-item" role="menuitem"><i data-lucide="bar-chart-2" style="width: 16px; height: 16px;"></i> Analytics Reports</a>
+          <a href="#" id="logoutBtn" class="dropdown-item logout" role="menuitem">
+    <i data-lucide="log-out" style="width: 16px; height: 16px;"></i>
+    Sign Out
+</a>
+        </div>
+      </div>
+    </div>
+  </header>
 
     <main class="container">
 

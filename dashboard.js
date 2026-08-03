@@ -1,126 +1,109 @@
 // Event Management System (EMS) - Dashboard & Reports Features
 
-// --- MOCK DATA ---
-const MOCK_DATA = {
-  stats: {
-    totalEvents: { value: 12, change: "+3 this month", isPositive: true },
-    activeParticipants: { value: 1420, change: "+12% vs last week", isPositive: true },
-    ticketSales: { value: 48250, change: "92% of target", isPositive: true },
-    avgRating: { value: 4.8, stars: 5 }
-  },
-  
-  upcomingEvents: [
-    { id: 1, name: "Kenya Tech Summit 2026", date: "Oct 15, 2026", location: "Nairobi (Main Hall)", participants: 241, status: "Registration Open", statusClass: "success" },
-    { id: 2, name: "DevFest Mombasa", date: "Nov 12, 2026", location: "PrideInn Mombasa", participants: 500, status: "Sold Out", statusClass: "danger" },
-    { id: 3, name: "FinTech RoundTable", date: "Oct 28, 2026", location: "Virtual (Zoom)", participants: 85, status: "Registration Open", statusClass: "success" },
-    { id: 4, name: "Product Design Seminar", date: "Dec 05, 2026", location: "Gearbox Hub Nairobi", participants: 120, status: "Registration Open", statusClass: "success" },
-    { id: 5, name: "Youth Leadership Forum", date: "Dec 18, 2026", location: "KICC Room 4", participants: 350, status: "Drafting", statusClass: "warning" }
-  ],
 
-  recentActivities: [
-    { id: 1, text: "<strong>Jane D.</strong> registered for Kenya Tech Summit 2026", time: "2 minutes ago", type: "success" },
-    { id: 2, text: "Event <strong>DevFest Mombasa</strong> was marked as <strong>Sold Out</strong>", time: "1 hour ago", type: "info" },
-    { id: 3, text: "Payout of <strong>$12,450</strong> processed for Ticket Sales", time: "4 hours ago", type: "success" },
-    { id: 4, text: "New feedback of <strong>4.9 stars</strong> received for Tech Roundtable", time: "1 day ago", type: "warning" },
-    { id: 5, text: "<strong>Enoch Arisa</strong> updated the Database schema migration config", time: "1 day ago", type: "info" }
-  ],
+async function loadCurrentUser(){
 
-  notifications: [
-    { id: 1, desc: "New participant registration from Alice W.", time: "5 mins ago", unread: true },
-    { id: 2, desc: "System backup was completed successfully", time: "1 hour ago", unread: true },
-    { id: 3, desc: "Urgent: DevFest Mombasa reaches maximum capacity limit!", time: "2 hours ago", unread: false }
-  ],
+    try {
 
-  charts: {
-    registrations30Days: {
-      labels: ["Jul 01", "Jul 05", "Jul 10", "Jul 15", "Jul 20", "Jul 25", "Jul 30"],
-      values: [150, 280, 420, 590, 780, 1100, 1420]
-    },
-    demographics: {
-      labels: ["Nairobi", "Mombasa", "Nakuru", "Virtual", "Other East Africa"],
-      values: [550, 310, 120, 350, 90]
+        const response = await fetch("/auth/current-user", {
+            credentials: "include"
+        });
+
+        const user = await response.json();
+
+if (!response.ok) {
+    console.error(user.message);
+    return;
+}
+
+
+        const avatar = document.querySelector(".avatar");
+        const username = document.querySelector(".dropdown-user-name");
+        const email = document.querySelector(".dropdown-user-email");
+
+
+        if(avatar){
+            avatar.textContent = user.fullName
+                .split(" ")
+                .map(name => name[0])
+                .join("")
+                .toUpperCase();
+        }
+
+
+        if(username){
+            username.textContent = user.fullName;
+        }
+
+
+        if(email){
+            email.textContent = user.email;
+        }
+
+
+        const welcome = document.querySelector(".page-title-section p");
+
+        if(welcome){
+            welcome.textContent =
+            `Welcome back, ${user.fullName.split(" ")[0]}! Here's a brief summary of how your events are performing.`;
+        }
+
+
+    } catch(error){
+
+        console.error("Unable to load user:", error);
+
     }
-  },
 
-  reports: {
-    participants: [
-      { name: "Alice Wanjiku", email: "alice.w@example.com", event: "Kenya Tech Summit 2026", date: "Jul 20, 2026", attended: "Yes", statusClass: "success" },
-      { name: "Brian Kiprop", email: "brian.k@example.com", event: "DevFest Mombasa", date: "Jul 18, 2026", attended: "Yes", statusClass: "success" },
-      { name: "Charles Ochieng", email: "charles.o@example.com", event: "FinTech RoundTable", date: "Jul 22, 2026", attended: "No", statusClass: "danger" },
-      { name: "David Ndwiga", email: "david.n@example.com", event: "Kenya Tech Summit 2026", date: "Jul 24, 2026", attended: "Yes", statusClass: "success" },
-      { name: "Emily Chebet", email: "emily.c@example.com", event: "Product Design Seminar", date: "Jul 25, 2026", attended: "No", statusClass: "danger" },
-      { name: "Fatma Salem", email: "fatma.s@example.com", event: "DevFest Mombasa", date: "Jul 19, 2026", attended: "Yes", statusClass: "success" },
-      { name: "Geoffrey Mutua", email: "geoffrey.m@example.com", event: "Youth Leadership Forum", date: "Jul 21, 2026", attended: "No", statusClass: "danger" }
-    ],
-    events: [
-      { event: "Kenya Tech Summit 2026", totalParticipants: 241, totalRevenue: 24100, rating: 4.8 },
-      { event: "DevFest Mombasa", totalParticipants: 500, totalRevenue: 15000, rating: 4.9 },
-      { event: "FinTech RoundTable", totalParticipants: 85, totalRevenue: 0, rating: 4.5 },
-      { event: "Product Design Seminar", totalParticipants: 120, totalRevenue: 6000, rating: 4.6 },
-      { event: "Youth Leadership Forum", totalParticipants: 350, totalRevenue: 3500, rating: 4.4 }
-    ],
-    attendance: [
-      { event: "Kenya Tech Summit 2026", date: "Oct 15, 2026", expected: 250, actual: 241, percentage: 96 },
-      { event: "DevFest Mombasa", date: "Nov 12, 2026", expected: 500, actual: 485, percentage: 97 },
-      { event: "FinTech RoundTable", date: "Oct 28, 2026", expected: 100, actual: 85, percentage: 85 },
-      { event: "Product Design Seminar", date: "Dec 05, 2026", expected: 120, actual: 110, percentage: 91 },
-      { event: "Youth Leadership Forum", date: "Dec 18, 2026", expected: 400, actual: 350, percentage: 87 }
-    ]
-  }
-};
-
-// --- DATA ACCESS LAYER (MOCK ASYNC) ---
-const delay = (ms = 100) => new Promise(resolve => setTimeout(resolve, ms));
-
-async function fetchStatsCardsData() {
-  await delay(120);
-  return MOCK_DATA.stats;
 }
 
 async function fetchUpcomingEvents() {
-  await delay(150);
-  return MOCK_DATA.upcomingEvents;
+
+    const response = await fetch("/api/dashboard/events", {
+        credentials: "include"
+    });
+
+    return await response.json();
+
 }
 
 async function fetchRecentActivity() {
-  await delay(100);
-  return MOCK_DATA.recentActivities;
+
+    const response = await fetch("/api/dashboard/activity", {
+        credentials: "include"
+    });
+
+    return await response.json();
+
 }
 
 async function fetchNotifications() {
-  await delay(80);
-  return MOCK_DATA.notifications;
+    return [];
 }
 
 async function fetchChartData() {
-  await delay(200);
-  return MOCK_DATA.charts;
+
+    const response = await fetch("/api/dashboard/charts", {
+        credentials: "include"
+    });
+    
+
+    return await response.json();
+
 }
 
 async function fetchReportsData(type) {
-  await delay(180);
-  return MOCK_DATA.reports[type];
-}
 
+    const response = await fetch(`/api/reports/${type}`, {
+        credentials: "include"
+    });
+
+    return await response.json();
+
+}
 // --- RENDERING ROUTINES ---
 
-// Populate Stats Cards
-async function initStatsCards() {
-  try {
-    const stats = await fetchStatsCardsData();
-    const totalEventsElement = document.getElementById("stat-total-events");
-    const activeParticipantsElement = document.getElementById("stat-active-participants");
-    const ticketSalesElement = document.getElementById("stat-ticket-sales");
-    const avgRatingElement = document.getElementById("stat-avg-rating");
 
-    if (totalEventsElement) totalEventsElement.innerText = stats.totalEvents.value;
-    if (activeParticipantsElement) activeParticipantsElement.innerText = stats.activeParticipants.value.toLocaleString();
-    if (ticketSalesElement) ticketSalesElement.innerText = `$${stats.ticketSales.value.toLocaleString()}`;
-    if (avgRatingElement) avgRatingElement.innerText = stats.avgRating.value.toFixed(1);
-  } catch (error) {
-    console.error("Error loading stats cards:", error);
-  }
-}
 
 // Populate Upcoming Events Table
 async function initUpcomingEventsTable(filterText = "") {
@@ -420,7 +403,7 @@ async function renderReportTable(filterText = "", dateFilterVal = "") {
           <tr>
             <td style="font-weight: 600; color: var(--primary-blue);">${row.event}</td>
             <td>${row.totalParticipants} Participants</td>
-            <td style="font-weight: 600;">$${row.totalRevenue.toLocaleString()}</td>
+           <td style="font-weight: 600;">Ksh ${row.totalRevenue.toLocaleString()}</td>
             <td>
               <div style="display: flex; align-items: center; gap: 8px;">
                 <span style="font-weight: 600;">${row.rating.toFixed(1)}</span>
@@ -490,11 +473,13 @@ function selectReportType(type, buttonEl) {
 
 document.addEventListener("DOMContentLoaded", () => {
   // 1. Render all Dashboard details
-  initStatsCards();
+  
+  loadDashboardStats();
   initUpcomingEventsTable();
   initRecentActivityFeed();
   initNotifications();
   initCharts();
+  loadCurrentUser();
 
   // 2. If we are on reports.html page, initialize default table
   if (document.getElementById("reports-tbody")) {
@@ -578,3 +563,66 @@ document.addEventListener("DOMContentLoaded", () => {
     lucide.createIcons();
   }
 });
+// =======================================
+// DASHBOARD DATABASE STATS
+// =======================================
+
+async function loadDashboardStats() {
+
+    try {
+
+        const response = await fetch("/api/dashboard");
+
+        const stats = await response.json();
+
+        const totalEvents = document.getElementById("stat-total-events");
+        const participants = document.getElementById("stat-active-participants");
+        const ticketSales = document.getElementById("stat-ticket-sales");
+        const rating = document.getElementById("stat-avg-rating");
+
+        if (totalEvents)
+            totalEvents.textContent = stats.totalEvents;
+
+        if (participants)
+            participants.textContent = Number(stats.totalParticipants).toLocaleString();
+
+        if (ticketSales)
+            ticketSales.textContent = `Ksh ${Number(stats.totalTicketSales).toLocaleString()}`;
+
+        if (rating)
+            rating.textContent = Number(stats.averageRating).toFixed(1);
+
+    } catch (error) {
+
+        console.error("Dashboard loading error:", error);
+
+    }
+ // Initialize Outline Lucide vector icons
+  if (window.lucide) {
+    lucide.createIcons();
+  }
+
+}
+// ======================
+// LOGOUT
+// ======================
+const logoutBtn = document.querySelector(".logout");
+
+if (logoutBtn) {
+    logoutBtn.addEventListener("click", async (e) => {
+        e.preventDefault();
+
+        try {
+            await fetch("/auth/logout", {
+                method: "POST",
+                credentials: "include"
+            });
+
+            window.location.href = "/auth/login.html";
+        } catch (err) {
+            console.error(err);
+            alert("Logout failed.");
+        }
+    });
+}
+

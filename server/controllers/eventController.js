@@ -6,30 +6,37 @@ const db = require("../config/database");
 const createEvent = (req, res) => {
 
     const {
-        title,
-        description,
-        venue,
-        event_date,
-        event_time,
-        capacity
-    } = req.body;
+    title,
+    category,
+    description,
+    venue,
+    organizer,
+    event_date,
+    event_time,
+    capacity,
+    price
+} = req.body;
 
     const sql = `
         INSERT INTO events
-        (title, description, venue, event_date, event_time, capacity)
-        VALUES (?, ?, ?, ?, ?, ?)
+(title, category, description, venue, organizer, event_date, event_time, capacity, price, status)
+VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `;
 
     db.query(
         sql,
         [
-            title,
-            description,
-            venue,
-            event_date,
-            event_time,
-            capacity
-        ],
+    title,
+    category,
+    description,
+    venue,
+    organizer,
+    event_date,
+    event_time,
+    capacity,
+    price,
+    "Upcoming"
+],
         (err, result) => {
 
             if (err) {
@@ -60,14 +67,13 @@ const getEvents = (req, res) => {
             event_id AS id,
             title AS name,
             venue,
-            event_date AS startDate,
+            DATE_FORMAT(event_date, '%Y-%m-%d') AS startDate,
             capacity,
             description,
-            'General' AS category,
-            'System' AS organizer,
-            event_date AS endDate,
-            0 AS price,
-            'Upcoming' AS status
+            category,
+organizer,
+price,
+status
         FROM events
         ORDER BY event_date ASC
     `;
@@ -85,6 +91,52 @@ const getEvents = (req, res) => {
         }
 
         res.json(results);
+
+    });
+
+};
+// ===============================
+// GET SINGLE EVENT
+// ===============================
+const getEventById = (req, res) => {
+
+    const id = req.params.id;
+
+    const sql = `
+        SELECT
+            event_id AS id,
+            title AS name,
+            venue,
+            DATE_FORMAT(event_date, '%Y-%m-%d') AS startDate,
+            capacity,
+            description,
+            category,
+organizer,
+price,
+status
+        FROM events
+        WHERE event_id = ?
+    `;
+
+    db.query(sql, [id], (err, results) => {
+
+        if (err) {
+            console.error(err);
+
+            return res.status(500).json({
+                message: "Failed to load event."
+            });
+        }
+
+        if (results.length === 0) {
+
+            return res.status(404).json({
+                message: "Event not found."
+            });
+
+        }
+
+        res.json(results[0]);
 
     });
 
@@ -123,37 +175,49 @@ const updateEvent = (req, res) => {
     const id = req.params.id;
 
     const {
-        title,
-        description,
-        venue,
-        event_date,
-        event_time,
-        capacity
-    } = req.body;
+    title,
+    category,
+    description,
+    venue,
+    organizer,
+    event_date,
+    event_time,
+    capacity,
+    price,
+    status
+} = req.body;
 
     const sql = `
         UPDATE events
-        SET
-            title = ?,
-            description = ?,
-            venue = ?,
-            event_date = ?,
-            event_time = ?,
-            capacity = ?
-        WHERE event_id = ?
+SET
+    title = ?,
+    category = ?,
+    description = ?,
+    venue = ?,
+    organizer = ?,
+    event_date = ?,
+    event_time = ?,
+    capacity = ?,
+    price = ?,
+    status = ?
+WHERE event_id = ?
     `;
 
     db.query(
         sql,
         [
-            title,
-            description,
-            venue,
-            event_date,
-            event_time,
-            capacity,
-            id
-        ],
+    title,
+    category,
+    description,
+    venue,
+    organizer,
+    event_date,
+    event_time,
+    capacity,
+    price,
+    status,
+    id
+],
         (err) => {
 
             if (err) {
@@ -175,6 +239,7 @@ const updateEvent = (req, res) => {
 module.exports = {
     createEvent,
     getEvents,
+    getEventById,
     deleteEvent,
     updateEvent
 };

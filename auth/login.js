@@ -10,28 +10,33 @@ loginForm.addEventListener("submit", async function (e) {
     try {
 
         const response = await fetch("/auth/login", {
+    credentials: "include",
 
-            method: "POST",
-       
+    method: "POST",
 
-            headers: {
-                "Content-Type": "application/json"
-            },
+    credentials: "include",
 
-            body: JSON.stringify({
-                email,
-                password
-            })
+    headers: {
+        "Content-Type": "application/json"
+    },
 
-        });
+    body: JSON.stringify({
+        email,
+        password
+    })
+
+});
 
         const data = await response.json();
+        console.log(data);
 
         alert(data.message);
 
-        if (response.ok) {
+       if (response.ok) {
 
     alert("Login successful!");
+
+    localStorage.setItem("user", JSON.stringify(data.user));
 
     window.location.href = "/dashboard.html";
 

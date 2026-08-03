@@ -152,9 +152,24 @@ const logoutUser = (req, res) => {
     });
 
 };
+// ======================
+// GET CURRENT USER
+// ======================
+const getCurrentUser = (req, res) => {
+
+    if (!req.session.user) {
+        return res.status(401).json({
+            message: "Not logged in"
+        });
+    }
+
+    res.json(req.session.user);
+
+};
 
 module.exports = {
     registerUser,
     loginUser,
-    logoutUser
+    logoutUser,
+    getCurrentUser
 };

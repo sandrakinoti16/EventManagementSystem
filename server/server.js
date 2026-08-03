@@ -5,6 +5,9 @@ const db = require("./config/database");
 const authRoutes = require("./routes/authRoutes");
 const eventRoutes = require("./routes/eventRoutes");
 const session = require("express-session");
+const dashboardRoutes = require("./routes/dashboardRoutes");
+const reportRoutes = require("./routes/reportRoutes");
+const registrationRoutes = require("./routes/registrationRoutes");
 
 const app = express();
 const PORT = 3000;
@@ -37,6 +40,12 @@ app.use("/events", eventRoutes);
 app.get("/", (req, res) => {
     res.redirect("/auth/login.html");
 });
+app.use("/api/dashboard", dashboardRoutes);
+app.use("/api/reports", reportRoutes);
+app.use("/api/registrations", registrationRoutes);
+console.log("Dashboard route mounted");
+console.log("Report routes mounted");
+console.log("Registration routes mounted");
 
 // Start Server
 app.listen(PORT, () => {

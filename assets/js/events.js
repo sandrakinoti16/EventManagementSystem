@@ -2,7 +2,42 @@
 // EVENT MANAGEMENT SYSTEM
 // events.js
 // ================================
+// ================================
+// LOAD CURRENT LOGGED-IN USER
+// ================================
 
+async function loadCurrentUser() {
+
+    try {
+
+        const response = await fetch("/auth/current-user", {
+            credentials: "include"
+        });
+
+        if (!response.ok) {
+            window.location.href = "/auth/login.html";
+            return;
+        }
+
+        const user = await response.json();
+
+        const avatar = document.getElementById("user-avatar");
+
+        if (avatar) {
+            avatar.textContent = user.fullName
+                .split(" ")
+                .map(name => name[0])
+                .join("")
+                .toUpperCase();
+        }
+
+    } catch (error) {
+
+        console.error("Unable to load user:", error);
+
+    }
+
+}
 // ================================
 // CREATE EVENT FORM
 // ================================
@@ -17,19 +52,25 @@ if (createForm) {
 
         const event = {
 
-            title: document.getElementById("eventName").value.trim(),
+    title: document.getElementById("eventName").value.trim(),
 
-            description: document.getElementById("description").value.trim(),
+    category: document.getElementById("category").value,
 
-            venue: document.getElementById("venue").value.trim(),
+    description: document.getElementById("description").value.trim(),
 
-            event_date: document.getElementById("startDate").value,
+    venue: document.getElementById("venue").value.trim(),
 
-            event_time: "09:00:00",
+    organizer: document.getElementById("organizer").value.trim(),
 
-            capacity: parseInt(document.getElementById("capacity").value)
+    event_date: document.getElementById("startDate").value,
 
-        };
+    event_time: "09:00:00",
+
+    capacity: parseInt(document.getElementById("capacity").value),
+
+    price: parseFloat(document.getElementById("ticketPrice").value) || 0
+
+};
 
         // Validation
         if (
@@ -263,14 +304,27 @@ if (editForm) {
 
                 const updatedEvent = {
 
-                    title: document.getElementById("eventName").value.trim(),
-                    description: document.getElementById("description").value.trim(),
-                    venue: document.getElementById("venue").value.trim(),
-                    event_date: document.getElementById("startDate").value,
-                    event_time: "09:00:00",
-                    capacity: parseInt(document.getElementById("capacity").value)
+    title: document.getElementById("eventName").value.trim(),
 
-                };
+    category: document.getElementById("category").value,
+
+    description: document.getElementById("description").value.trim(),
+
+    venue: document.getElementById("venue").value.trim(),
+
+    organizer: document.getElementById("organizer").value.trim(),
+
+    event_date: document.getElementById("startDate").value,
+
+    event_time: "09:00:00",
+
+    capacity: parseInt(document.getElementById("capacity").value),
+
+    price: parseFloat(document.getElementById("ticketPrice").value) || 0,
+
+    status: "Upcoming"
+
+};
 
                 const response = await fetch(`/events/${id}`, {
 
@@ -303,47 +357,57 @@ if (editForm) {
 // VIEW EVENT
 // ================================
 
-function viewEvent(id){
+async function viewEvent(id) {
 
-    const events = JSON.parse(localStorage.getItem("events")) || [];
+    try {
 
-    const event = events.find(e => e.id === id);
+        const response = await fetch(`/events/${id}`);
 
-    if(!event) return;
+        const event = await response.json();
 
-    document.getElementById("eventDetails").innerHTML = `
+        if (!response.ok) {
 
-        <p><strong>Event:</strong> ${event.name}</p>
+            alert(event.message);
 
-        <p><strong>Category:</strong> ${event.category}</p>
+            return;
 
-        <p><strong>Venue:</strong> ${event.venue}</p>
+        }
 
-        <p><strong>Organizer:</strong> ${event.organizer}</p>
+        document.getElementById("eventDetails").innerHTML = `
 
-        <p><strong>Start Date:</strong> ${event.startDate}</p>
+            <p><strong>Event:</strong> ${event.name}</p>
 
-        <p><strong>End Date:</strong> ${event.endDate}</p>
+            <p><strong>Category:</strong> ${event.category}</p>
 
-        <p><strong>Capacity:</strong> ${event.capacity}</p>
+            <p><strong>Venue:</strong> ${event.venue}</p>
 
-        <p><strong>Ticket Price:</strong> Ksh ${event.price}</p>
+            <p><strong>Organizer:</strong> ${event.organizer}</p>
 
-        <p><strong>Status:</strong> ${event.status}</p>
+            <p><strong>Start Date:</strong> ${event.startDate}</p>
 
-        <p><strong>Description:</strong><br>${event.description}</p>
+            <p><strong>End Date:</strong> ${event.endDate}</p>
 
-    `;
+            <p><strong>Capacity:</strong> ${event.capacity}</p>
 
-    document.getElementById("viewModal").style.display = "flex";
+            <p><strong>Ticket Price:</strong> Ksh ${event.price}</p>
+
+            <p><strong>Status:</strong> ${event.status}</p>
+
+            <p><strong>Description:</strong><br>${event.description}</p>
+
+        `;
+
+        document.getElementById("viewModal").style.display = "flex";
+
+    } catch (error) {
+
+        console.error(error);
+
+        alert("Unable to load event.");
+
+    }
 
 }
-
-document.getElementById("closeViewModal")?.addEventListener("click", function(){
-
-    document.getElementById("viewModal").style.display = "none";
-
-});
 // ================================
 // LIVE SEARCH
 // ================================
@@ -364,5 +428,62 @@ const categoryFilter = document.getElementById("categoryFilter");
 if (categoryFilter) {
 
     categoryFilter.addEventListener("change", loadEvents);
+
+}
+// ================================
+// CLOSE VIEW MODAL
+// ================================
+
+const closeViewModal = document.getElementById("closeViewModal");
+
+if (closeViewModal) {
+
+    closeViewModal.addEventListener("click", function () {
+
+        document.getElementById("viewModal").style.display = "none";
+
+    });
+
+}
+// Load logged-in user
+
+document.addEventListener("DOMContentLoaded", () => {
+
+    loadCurrentUser();
+
+    if (window.lucide) {
+        lucide.createIcons();
+    }
+
+});
+// ================================
+// LOGOUT
+// ================================
+
+const logoutBtn = document.getElementById("logoutBtn");
+
+if (logoutBtn) {
+
+    logoutBtn.addEventListener("click", async function (e) {
+
+        e.preventDefault();
+
+        try {
+
+            await fetch("/auth/logout", {
+                method: "POST",
+                credentials: "include"
+            });
+
+            window.location.href = "../auth/login.html";
+
+        } catch (error) {
+
+            console.error(error);
+            alert("Logout failed.");
+
+        }
+
+    });
 
 }

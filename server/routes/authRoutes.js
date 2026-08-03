@@ -2,20 +2,24 @@ const express = require("express");
 
 const router = express.Router();
 
-const {
-    registerUser,
-    loginUser,
-    logoutUser
-} = require("../controllers/authController");
+const authController = require("../controllers/authController");
+
 
 // Register
-router.post("/register", registerUser);
+router.post("/register", authController.registerUser);
+
 
 // Login
-router.post("/login", loginUser);
+router.post("/login", authController.loginUser);
+
 
 // Logout
-router.post("/logout", logoutUser);
+router.post("/logout", authController.logoutUser);
+
+
+// Get Current User
+router.get("/current-user", authController.getCurrentUser);
+
 
 // Get Logged-in User
 router.get("/profile", (req, res) => {
@@ -29,5 +33,6 @@ router.get("/profile", (req, res) => {
     res.json(req.session.user);
 
 });
+
 
 module.exports = router;

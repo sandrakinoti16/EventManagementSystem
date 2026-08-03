@@ -28,10 +28,12 @@
       
       <!-- Nav Tabs -->
       <nav class="nav-links" aria-label="Main Navigation">
-        <a href="dashboard.html" class="nav-item active">Dashboard</a>
-        <a href="reports.html" class="nav-item">Reports</a>
-        <a href="pages/events.html" class="nav-item">Events</a>
-      </nav>
+    <a href="dashboard.html" class="nav-item active">Dashboard</a>
+    <a href="reports.html" class="nav-item">Reports</a>
+    <a href="pages/events.html" class="nav-item">Events</a>
+    <a href="pages/registration.html" class="nav-item">Registrations</a>
+    <a href="pages/ticket.html" class="nav-item">Tickets</a>
+</nav>
     </div>
 
     <!-- Search in Header -->
@@ -63,18 +65,21 @@
       <!-- User Profile Toggle -->
       <div class="dropdown-container">
         <button class="avatar-wrapper" id="avatarDropdownTrigger" aria-label="User profile menu" aria-haspopup="true" aria-expanded="false">
-          <div class="avatar">JW</div>
+          <div class="avatar" id="user-avatar">U</div>
         </button>
         <!-- Dropdown menu -->
         <div class="dropdown-menu" id="profileDropdownMenu" role="menu">
           <div class="dropdown-header">
-            <div class="dropdown-user-name">John Wek</div>
-            <div class="dropdown-user-email">john.wek@eventmanagement.com</div>
+            <div class="dropdown-user-name" id="logged-user-name">User</div>
+            <div class="dropdown-user-email" id="logged-user-email">user@email.com</div>
           </div>
           <a href="#" class="dropdown-item" role="menuitem"><i data-lucide="user" style="width: 16px; height: 16px;"></i> My Profile</a>
           <a href="#" class="dropdown-item" role="menuitem"><i data-lucide="settings" style="width: 16px; height: 16px;"></i> Settings</a>
           <a href="reports.html" class="dropdown-item" role="menuitem"><i data-lucide="bar-chart-2" style="width: 16px; height: 16px;"></i> Analytics Reports</a>
-          <a href="auth/login.html" class="dropdown-item logout" role="menuitem"><i data-lucide="log-out" style="width: 16px; height: 16px;"></i> Sign Out</a>
+          <a href="#" class="dropdown-item logout" role="menuitem">
+    <i data-lucide="log-out" style="width:16px;height:16px;"></i>
+    Sign Out
+</a>
         </div>
       </div>
     </div>
@@ -87,7 +92,7 @@
     <section class="page-title-section">
       <div>
         <h1>Dashboard</h1>
-        <p>Welcome back, John! Here's a brief summary of how your events are performing.</p>
+        <p id="welcome-message">Welcome back! Here's a brief summary of how your events are performing.</p>
       </div>
       <div>
         <!-- Date display / filter alternative -->
@@ -117,7 +122,7 @@
       <!-- Active Participants -->
       <article class="dashboard-card stat-card">
         <div class="stat-header">
-          <span>ACTIVE PARTICIPANTS</span>
+          <span>TOTAL CAPACITY</span>
           <div class="stat-icon"><i data-lucide="users" style="width: 18px; height: 18px;"></i></div>
         </div>
         <div class="stat-value-group">
