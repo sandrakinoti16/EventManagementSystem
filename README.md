@@ -99,7 +99,7 @@ EventManagementSystem/
 
 ## 4. Successful Login
 
-![Successful Login](screenshots/Successful Login.png)
+![Successful Login](screenshots/Successful%20Login.png)
 
 ---
 
@@ -213,7 +213,7 @@ EventManagementSystem/
 
 ## 23. Recent Activity
 
-![Recent Activity](screenshots/Recent Activity.png)
+![Recent Activity](screenshots/Recent%20Activity.png)
 
 ---
 
